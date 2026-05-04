@@ -330,6 +330,50 @@
     /* Profile image */
     .hero-image-wrapper {
       flex-shrink: 0;
+      position: relative;
+    }
+
+    /* Decorative glowing orb behind profile photo */
+    .hero-photo-orb {
+      position: absolute;
+      width: 320px;
+      height: 320px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 45% 42%,
+        rgba(230, 214, 255, 0.95) 0%,
+        rgba(201, 168, 255, 0.85) 20%,
+        rgba(168, 124, 255, 0.65) 45%,
+        rgba(122, 77, 232, 0.35) 70%,
+        transparent 100%
+      );
+      filter: blur(28px);
+      opacity: 0.42;
+      pointer-events: none;
+      z-index: 0;
+      bottom: -40px;
+      right: -50px;
+      animation: orbGlow 6s ease-in-out infinite alternate;
+    }
+
+    @keyframes orbGlow {
+      0%   { opacity: 0.35; transform: scale(1); }
+      100% { opacity: 0.5;  transform: scale(1.08); }
+    }
+
+    /* Keep photo above orb */
+    .hero-image-placeholder {
+      position: relative;
+      z-index: 1;
+    }
+
+    @media (max-width: 767px) {
+      .hero-photo-orb {
+        width: 220px;
+        height: 220px;
+        bottom: -25px;
+        right: -30px;
+        filter: blur(20px);
+      }
     }
 
     .hero-image-placeholder {
@@ -1538,6 +1582,143 @@
       opacity: 0.08;
     }
 
+    /* =============================================
+       BOTANICAL LEAF DECORATIONS
+       ============================================= */
+
+    /* Base botanical leaf style */
+    .bot-leaf {
+      position: absolute;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.1;
+      filter: drop-shadow(0 0 20px rgba(201, 168, 255, 0.25));
+    }
+
+    /* Hero — bottom-left, large branch */
+    .bot-leaf--hero-bl {
+      bottom: -60px;
+      left: -40px;
+      width: 320px;
+      transform: rotate(-15deg);
+      opacity: 0.09;
+      animation: leafFloat 8s ease-in-out infinite alternate;
+    }
+
+    /* Hero — top-right, smaller sprig */
+    .bot-leaf--hero-tr {
+      top: 60px;
+      right: -50px;
+      width: 260px;
+      transform: rotate(160deg) scaleX(-1);
+      opacity: 0.08;
+      animation: leafFloat 10s ease-in-out infinite alternate-reverse;
+    }
+
+    /* Gallery — top-right corner */
+    .bot-leaf--gallery-tr {
+      top: -40px;
+      right: -30px;
+      width: 280px;
+      transform: rotate(20deg);
+      opacity: 0.09;
+      animation: leafFloat 9s ease-in-out infinite alternate;
+    }
+
+    /* Contact — bottom-left corner */
+    .bot-leaf--contact-bl {
+      bottom: -50px;
+      left: -40px;
+      width: 300px;
+      transform: rotate(-10deg);
+      opacity: 0.08;
+      animation: leafFloat 11s ease-in-out infinite alternate-reverse;
+    }
+
+    @keyframes leafFloat {
+      0%   { transform: rotate(var(--leaf-rot, -15deg)) translateY(0px); }
+      100% { transform: rotate(var(--leaf-rot, -15deg)) translateY(-8px); }
+    }
+
+    /* =============================================
+       PNG LEAF DECORATIONS
+       ============================================= */
+    .png-leaf {
+      position: absolute;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.08;
+      filter: blur(1.5px) drop-shadow(0 0 15px rgba(122, 77, 232, 0.3));
+      mix-blend-mode: screen;
+      user-select: none;
+    }
+
+    /* Hero — right side */
+    .png-leaf--hero-r {
+      right: -60px;
+      top: 50%;
+      transform: translateY(-50%) rotate(15deg);
+      width: 380px;
+      opacity: 0.07;
+      animation: leafDrift 10s ease-in-out infinite alternate;
+    }
+
+    /* About — bottom-left */
+    .png-leaf--about-bl {
+      bottom: -40px;
+      left: -50px;
+      transform: rotate(-20deg) scaleX(-1);
+      width: 320px;
+      opacity: 0.07;
+      animation: leafDrift 12s ease-in-out infinite alternate-reverse;
+    }
+
+    /* Gallery — right edge */
+    .png-leaf--gallery-r {
+      right: -40px;
+      top: 30%;
+      transform: rotate(10deg);
+      width: 300px;
+      opacity: 0.07;
+      animation: leafDrift 9s ease-in-out infinite alternate;
+    }
+
+    /* Footer — top-left */
+    .png-leaf--footer-tl {
+      top: -20px;
+      left: -30px;
+      transform: rotate(-30deg);
+      width: 260px;
+      opacity: 0.06;
+      animation: leafDrift 11s ease-in-out infinite alternate-reverse;
+    }
+
+    @keyframes leafDrift {
+      0%   { transform: rotate(var(--lr, 15deg)) translateY(0px); }
+      100% { transform: rotate(var(--lr, 15deg)) translateY(-10px); }
+    }
+
+    /* Mobile adjustments */
+    @media (max-width: 767px) {
+      .png-leaf--hero-r {
+        width: 220px;
+        right: -40px;
+        opacity: 0.06;
+      }
+      .png-leaf--about-bl {
+        width: 200px;
+        bottom: -20px;
+        left: -30px;
+      }
+      .png-leaf--gallery-r {
+        width: 180px;
+        right: -20px;
+      }
+      .png-leaf--footer-tl {
+        width: 160px;
+      }
+    }
+
   </style>
 </head>
 <body>
@@ -1576,21 +1757,61 @@
         <div class="glow-orb glow-orb--hero-tl"></div>
         <div class="glow-orb glow-orb--hero-br"></div>
       </div>
-      <!-- Decorative leaf top-right -->
-      <svg class="deco-leaf deco-leaf--hero-tr" viewBox="0 0 200 300" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <path d="M100 280 C100 280 10 200 10 120 C10 50 60 10 100 10 C140 10 190 50 190 120 C190 200 100 280 100 280Z" fill="url(#leafGrad1)"/>
-        <path d="M100 280 C100 280 100 150 100 10" stroke="rgba(201,168,255,0.4)" stroke-width="1.5" stroke-dasharray="4 4"/>
+      <!-- PNG leaf — right side background -->
+      <img src="leaf1.png" class="png-leaf png-leaf--hero-r" alt="" aria-hidden="true">
+
+      <!-- Botanical leaf — top-right -->
+      <svg class="bot-leaf bot-leaf--hero-tr" viewBox="0 0 300 500" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
         <defs>
-          <linearGradient id="leafGrad1" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stop-color="#7a4de8" stop-opacity="0.6"/>
-            <stop offset="100%" stop-color="#c9a8ff" stop-opacity="0.3"/>
+          <linearGradient id="bLeaf1" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#a87cff" stop-opacity="0.9"/>
+            <stop offset="100%" stop-color="#e6d6ff" stop-opacity="0.4"/>
           </linearGradient>
         </defs>
+        <!-- Main stem -->
+        <path d="M150 480 C148 400 145 320 140 240 C135 160 125 90 110 30" stroke="#c9a8ff" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.6"/>
+        <!-- Leaf 1 - large left -->
+        <path d="M138 260 C110 240 75 220 60 195 C50 175 58 155 75 150 C95 145 120 160 135 185 C148 205 145 235 138 260Z" fill="url(#bLeaf1)" opacity="0.85"/>
+        <path d="M138 260 C120 230 95 200 75 150" stroke="#c9a8ff" stroke-width="0.8" fill="none" opacity="0.4"/>
+        <!-- Leaf 2 - right -->
+        <path d="M142 220 C165 200 195 185 210 162 C220 145 215 125 200 120 C182 115 160 128 148 150 C138 168 138 195 142 220Z" fill="url(#bLeaf1)" opacity="0.75"/>
+        <path d="M142 220 C158 190 185 155 200 120" stroke="#c9a8ff" stroke-width="0.8" fill="none" opacity="0.4"/>
+        <!-- Leaf 3 - upper left -->
+        <path d="M133 170 C108 155 78 145 62 122 C52 105 58 85 74 80 C92 75 115 88 128 110 C140 128 138 152 133 170Z" fill="url(#bLeaf1)" opacity="0.7"/>
+        <path d="M133 170 C115 140 88 105 74 80" stroke="#c9a8ff" stroke-width="0.8" fill="none" opacity="0.4"/>
+        <!-- Leaf 4 - upper right -->
+        <path d="M136 130 C158 112 185 100 198 78 C208 60 202 42 188 38 C172 34 152 46 142 68 C133 86 132 110 136 130Z" fill="url(#bLeaf1)" opacity="0.65"/>
+        <path d="M136 130 C152 100 178 62 188 38" stroke="#c9a8ff" stroke-width="0.8" fill="none" opacity="0.4"/>
+        <!-- Small tip leaf -->
+        <path d="M115 52 C108 38 108 20 115 10 C122 2 130 5 132 18 C134 30 128 44 115 52Z" fill="url(#bLeaf1)" opacity="0.6"/>
+      </svg>
+
+      <!-- Botanical leaf — bottom-left -->
+      <svg class="bot-leaf bot-leaf--hero-bl" viewBox="0 0 300 500" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <defs>
+          <linearGradient id="bLeaf2" x1="0" y1="1" x2="1" y2="0">
+            <stop offset="0%" stop-color="#7a4de8" stop-opacity="0.9"/>
+            <stop offset="100%" stop-color="#c9a8ff" stop-opacity="0.4"/>
+          </linearGradient>
+        </defs>
+        <!-- Main stem -->
+        <path d="M80 20 C90 100 100 180 110 260 C120 340 135 410 150 480" stroke="#a87cff" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.6"/>
+        <!-- Leaf 1 -->
+        <path d="M95 120 C68 108 38 100 22 78 C10 60 16 40 32 35 C50 30 74 42 88 65 C100 84 100 105 95 120Z" fill="url(#bLeaf2)" opacity="0.8"/>
+        <path d="M95 120 C74 88 46 52 32 35" stroke="#a87cff" stroke-width="0.8" fill="none" opacity="0.4"/>
+        <!-- Leaf 2 -->
+        <path d="M100 180 C125 165 152 158 165 136 C175 118 168 98 154 94 C138 90 118 102 108 124 C98 142 97 163 100 180Z" fill="url(#bLeaf2)" opacity="0.75"/>
+        <path d="M100 180 C116 148 142 108 154 94" stroke="#a87cff" stroke-width="0.8" fill="none" opacity="0.4"/>
+        <!-- Leaf 3 -->
+        <path d="M105 250 C78 238 48 232 32 210 C20 192 26 172 42 167 C60 162 84 174 98 196 C110 215 110 236 105 250Z" fill="url(#bLeaf2)" opacity="0.7"/>
+        <path d="M105 250 C84 218 56 180 42 167" stroke="#a87cff" stroke-width="0.8" fill="none" opacity="0.4"/>
       </svg>
 
       <div class="hero-content">
         <!-- Profile image -->
         <div class="hero-image-wrapper">
+          <!-- Decorative glowing orb -->
+          <div class="hero-photo-orb" aria-hidden="true"></div>
           <div class="hero-image-placeholder" aria-label="Aakriti Aryal profile photo">
             <img src="Photo 1.jpg" alt="Aakriti Aryal" style="width:100%;height:100%;object-fit:cover;border-radius:50%;filter:brightness(1.05) contrast(1.05);">
           </div>
@@ -1651,6 +1872,8 @@
             </linearGradient>
           </defs>
         </svg>
+        <!-- PNG leaf — bottom-left -->
+        <img src="leaf2.png" class="png-leaf png-leaf--about-bl" alt="" aria-hidden="true">
       </div>
       <div class="section-inner">
         <div class="about-content">
@@ -1763,7 +1986,7 @@
             <div class="video-placeholder">
               <video
                 id="video-2"
-                src="Video 2.mp4"
+                src="Video 7.mp4"
                 loop
                 playsinline
                 preload="metadata"
@@ -1778,7 +2001,7 @@
             <div class="video-placeholder">
               <video
                 id="video-3"
-                src="Video 3.mp4"
+                src="Video 6.mp4"
                 loop
                 playsinline
                 preload="metadata"
@@ -1832,16 +2055,25 @@
       <!-- Decorative layer -->
       <div class="deco-layer">
         <div class="glow-orb glow-orb--gallery-l"></div>
-        <svg class="deco-leaf deco-leaf--gallery-br" viewBox="0 0 200 300" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <path d="M100 280 C100 280 10 200 10 120 C10 50 60 10 100 10 C140 10 190 50 190 120 C190 200 100 280 100 280Z" fill="url(#leafGrad3)"/>
-          <path d="M100 280 C100 280 100 150 100 10" stroke="rgba(201,168,255,0.3)" stroke-width="1.5" stroke-dasharray="4 4"/>
+        <!-- Botanical leaf — top-right -->
+        <svg class="bot-leaf bot-leaf--gallery-tr" viewBox="0 0 300 500" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
           <defs>
-            <linearGradient id="leafGrad3" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0%" stop-color="#a87cff" stop-opacity="0.5"/>
-              <stop offset="100%" stop-color="#e6d6ff" stop-opacity="0.2"/>
+            <linearGradient id="bLeaf3" x1="1" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#c9a8ff" stop-opacity="0.9"/>
+              <stop offset="100%" stop-color="#7a4de8" stop-opacity="0.4"/>
             </linearGradient>
           </defs>
+          <path d="M160 480 C155 400 148 310 140 230 C132 150 120 80 105 20" stroke="#c9a8ff" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.5"/>
+          <path d="M138 240 C112 225 82 215 65 192 C52 174 58 154 75 149 C94 144 118 157 132 180 C144 200 143 222 138 240Z" fill="url(#bLeaf3)" opacity="0.8"/>
+          <path d="M138 240 C118 205 88 165 75 149" stroke="#c9a8ff" stroke-width="0.8" fill="none" opacity="0.35"/>
+          <path d="M143 185 C168 168 196 158 210 136 C220 118 214 98 200 93 C184 88 162 100 150 122 C140 140 139 164 143 185Z" fill="url(#bLeaf3)" opacity="0.75"/>
+          <path d="M143 185 C158 152 186 112 200 93" stroke="#c9a8ff" stroke-width="0.8" fill="none" opacity="0.35"/>
+          <path d="M135 135 C110 120 82 112 66 90 C54 72 60 52 76 47 C94 42 118 54 130 76 C141 95 140 118 135 135Z" fill="url(#bLeaf3)" opacity="0.7"/>
+          <path d="M135 135 C116 100 88 62 76 47" stroke="#c9a8ff" stroke-width="0.8" fill="none" opacity="0.35"/>
+          <path d="M118 68 C110 52 110 32 118 20 C126 10 135 13 137 26 C139 40 132 56 118 68Z" fill="url(#bLeaf3)" opacity="0.6"/>
         </svg>
+        <!-- PNG leaf — right edge -->
+        <img src="leaf1.png" class="png-leaf png-leaf--gallery-r" alt="" aria-hidden="true">
       </div>
       <div class="section-inner">
         <div class="section-header">
@@ -1894,6 +2126,24 @@
       <!-- Decorative layer -->
       <div class="deco-layer">
         <div class="glow-orb glow-orb--contact-r"></div>
+        <!-- Botanical leaf — bottom-left -->
+        <svg class="bot-leaf bot-leaf--contact-bl" viewBox="0 0 300 500" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <defs>
+            <linearGradient id="bLeaf4" x1="0" y1="1" x2="1" y2="0">
+              <stop offset="0%" stop-color="#7a4de8" stop-opacity="0.9"/>
+              <stop offset="100%" stop-color="#e6d6ff" stop-opacity="0.4"/>
+            </linearGradient>
+          </defs>
+          <path d="M120 30 C125 110 130 195 138 275 C146 355 158 425 170 490" stroke="#a87cff" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.55"/>
+          <path d="M128 110 C100 96 70 88 54 66 C42 48 48 28 64 23 C82 18 106 30 120 52 C132 71 132 93 128 110Z" fill="url(#bLeaf4)" opacity="0.8"/>
+          <path d="M128 110 C106 74 78 36 64 23" stroke="#a87cff" stroke-width="0.8" fill="none" opacity="0.35"/>
+          <path d="M133 175 C158 160 186 152 200 130 C210 112 204 92 190 87 C174 82 152 94 142 116 C132 134 130 157 133 175Z" fill="url(#bLeaf4)" opacity="0.75"/>
+          <path d="M133 175 C148 142 176 102 190 87" stroke="#a87cff" stroke-width="0.8" fill="none" opacity="0.35"/>
+          <path d="M138 248 C112 234 82 226 66 204 C54 186 60 166 76 161 C94 156 118 168 132 190 C144 209 143 231 138 248Z" fill="url(#bLeaf4)" opacity="0.7"/>
+          <path d="M138 248 C118 212 88 172 76 161" stroke="#a87cff" stroke-width="0.8" fill="none" opacity="0.35"/>
+          <path d="M144 318 C168 302 194 292 206 270 C216 252 210 232 196 228 C180 224 158 236 148 258 C138 276 138 300 144 318Z" fill="url(#bLeaf4)" opacity="0.65"/>
+          <path d="M144 318 C158 284 184 244 196 228" stroke="#a87cff" stroke-width="0.8" fill="none" opacity="0.35"/>
+        </svg>
       </div>
       <div class="section-inner">
         <div class="section-header">
@@ -1992,6 +2242,8 @@
         </linearGradient>
       </defs>
     </svg>
+    <!-- PNG leaf — top-left background -->
+    <img src="leaf2.png" class="png-leaf png-leaf--footer-tl" alt="" aria-hidden="true">
     <div class="footer-content">
       <div class="footer-brand">
         <span class="footer-name">Aakriti Aryal</span>
