@@ -1719,6 +1719,71 @@
       }
     }
 
+    /* =============================================
+       LIGHTBOX
+       ============================================= */
+    .lightbox {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: rgba(7, 6, 15, 0.95);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      align-items: center;
+      justify-content: center;
+      cursor: zoom-out;
+      animation: lightboxFadeIn 0.3s ease;
+    }
+
+    .lightbox.active {
+      display: flex;
+    }
+
+    @keyframes lightboxFadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    .lightbox-img {
+      max-width: 90vw;
+      max-height: 90vh;
+      object-fit: contain;
+      border-radius: var(--radius-lg);
+      box-shadow: 0 0 80px rgba(122, 77, 232, 0.4), 0 0 0 1px rgba(201, 168, 255, 0.15);
+      animation: lightboxZoomIn 0.3s ease;
+      cursor: default;
+    }
+
+    @keyframes lightboxZoomIn {
+      from { transform: scale(0.92); opacity: 0; }
+      to   { transform: scale(1);    opacity: 1; }
+    }
+
+    .lightbox-close {
+      position: absolute;
+      top: 1.5rem;
+      right: 1.5rem;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: rgba(201, 168, 255, 0.1);
+      border: 1px solid rgba(201, 168, 255, 0.3);
+      color: var(--accent-lavender);
+      font-size: 1.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: var(--transition-fast);
+    }
+
+    .lightbox-close:hover {
+      background: var(--gradient-accent);
+      color: #fff;
+      border-color: transparent;
+    }
+
   </style>
 </head>
 <body>
@@ -2082,36 +2147,35 @@
         </div>
         <div class="gallery-grid">
           <div class="gallery-item">
-            <div class="gallery-placeholder gallery-ph-1" aria-label="Gallery photo 1"></div>
+            <img src="Photo 3.jpg" alt="Gallery photo 1" style="width:100%;height:100%;object-fit:cover;">
             <div class="gallery-overlay"><i class="fas fa-expand-alt"></i></div>
           </div>
           <div class="gallery-item">
-            <div class="gallery-placeholder gallery-ph-2" aria-label="Gallery photo 2"></div>
+            <img src="Photo 4.jpg" alt="Gallery photo 2" style="width:100%;height:100%;object-fit:cover;">
             <div class="gallery-overlay"><i class="fas fa-expand-alt"></i></div>
           </div>
           <div class="gallery-item">
-            <div class="gallery-placeholder gallery-ph-3" aria-label="Gallery photo 3"></div>
-            <div class="gallery-overlay"><i class="fas fa-expand-alt"></i></div>
-          </div>
-
-          <div class="gallery-item">
-            <div class="gallery-placeholder gallery-ph-5" aria-label="Gallery photo 5"></div>
+            <img src="Photo 5.jpg" alt="Gallery photo 3" style="width:100%;height:100%;object-fit:cover;">
             <div class="gallery-overlay"><i class="fas fa-expand-alt"></i></div>
           </div>
           <div class="gallery-item">
-            <div class="gallery-placeholder gallery-ph-6" aria-label="Gallery photo 6"></div>
+            <img src="Photo 6.jpg" alt="Gallery photo 4" style="width:100%;height:100%;object-fit:cover;">
             <div class="gallery-overlay"><i class="fas fa-expand-alt"></i></div>
           </div>
           <div class="gallery-item">
-            <div class="gallery-placeholder gallery-ph-7" aria-label="Gallery photo 7"></div>
+            <img src="Photo 7.jpg" alt="Gallery photo 5" style="width:100%;height:100%;object-fit:cover;">
             <div class="gallery-overlay"><i class="fas fa-expand-alt"></i></div>
           </div>
           <div class="gallery-item">
-            <div class="gallery-placeholder gallery-ph-8" aria-label="Gallery photo 8"></div>
+            <img src="Photo 8.jpg" alt="Gallery photo 6" style="width:100%;height:100%;object-fit:cover;">
             <div class="gallery-overlay"><i class="fas fa-expand-alt"></i></div>
           </div>
           <div class="gallery-item">
-            <div class="gallery-placeholder gallery-ph-9" aria-label="Gallery photo 9"></div>
+            <img src="Photo 9.jpg" alt="Gallery photo 7" style="width:100%;height:100%;object-fit:cover;">
+            <div class="gallery-overlay"><i class="fas fa-expand-alt"></i></div>
+          </div>
+          <div class="gallery-item">
+            <img src="Photo 10.jpg" alt="Gallery photo 8" style="width:100%;height:100%;object-fit:cover;">
             <div class="gallery-overlay"><i class="fas fa-expand-alt"></i></div>
           </div>
         </div>
@@ -2265,6 +2329,14 @@
   <button id="back-to-top" aria-label="Back to top" class="back-to-top">
     <i class="fas fa-chevron-up"></i>
   </button>
+
+  <!-- Lightbox -->
+  <div id="lightbox" class="lightbox" role="dialog" aria-modal="true" aria-label="Photo viewer">
+    <button class="lightbox-close" id="lightbox-close" aria-label="Close photo">
+      <i class="fas fa-times"></i>
+    </button>
+    <img id="lightbox-img" class="lightbox-img" src="" alt="">
+  </div>
 
   <script>
     // =============================================
@@ -2525,6 +2597,55 @@
     } else {
       initScrollAnimations();
     }
+
+    // =============================================
+    // LIGHTBOX — Gallery expand
+    // =============================================
+    const lightbox    = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightbox-img');
+
+    // Open lightbox when expand icon is clicked
+    document.querySelectorAll('.gallery-item').forEach(item => {
+      const overlay = item.querySelector('.gallery-overlay');
+      const img     = item.querySelector('img');
+      if (overlay && img) {
+        overlay.addEventListener('click', (e) => {
+          e.stopPropagation();
+          lightboxImg.src = img.src;
+          lightboxImg.alt = img.alt;
+          lightbox.classList.add('active');
+          document.body.style.overflow = 'hidden';
+        });
+      }
+    });
+
+    // Close on backdrop click
+    lightbox.addEventListener('click', () => {
+      lightbox.classList.remove('active');
+      document.body.style.overflow = '';
+    });
+
+    // Close button
+    const lightboxClose = document.getElementById('lightbox-close');
+    if (lightboxClose) {
+      lightboxClose.addEventListener('click', (e) => {
+        e.stopPropagation();
+        lightbox.classList.remove('active');
+        document.body.style.overflow = '';
+      });
+    }
+
+    // Prevent closing when clicking the image itself
+    lightboxImg.addEventListener('click', (e) => e.stopPropagation());
+
+    // Close on Escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        lightbox.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+    });
+
   </script>
 
 </body>
