@@ -603,14 +603,20 @@
       animation: nameReveal 1.0s ease-out both;
     }
 
-    /* "Aryal" — Poppins bold, smaller, muted */
+    /* "Aryal" — same script font as Aakriti */
     .hero-name-last {
-      font-family: var(--font-family);
-      font-size: clamp(1.4rem, 3vw, 2rem);
-      font-weight: var(--font-semibold);
-      color: var(--text-secondary);
-      letter-spacing: 0.25em;
-      text-transform: uppercase;
+      font-family: 'Great Vibes', cursive;
+      font-size: clamp(2.5rem, 5.5vw, 4.2rem);
+      font-weight: 400;
+      background: linear-gradient(135deg, #c9a8ff 0%, #e6d6ff 60%, #c9a8ff 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      letter-spacing: 0.03em;
+      line-height: 1.15;
+      text-transform: none;
+      filter: drop-shadow(0 0 10px rgba(201, 168, 255, 0.45))
+              drop-shadow(0 0 22px rgba(122, 77, 232, 0.28));
       animation: nameReveal 1.0s ease-out 0.2s both;
     }
 
@@ -764,8 +770,8 @@
       }
 
       .hero-name-last {
-        font-size: clamp(1rem, 4vw, 1.4rem);
-        letter-spacing: 0.2em;
+        font-size: clamp(2rem, 9vw, 3.2rem);
+        letter-spacing: 0.03em;
       }
     }
 
